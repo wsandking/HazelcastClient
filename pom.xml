@@ -14,7 +14,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
-		<docker.image.prefix>privateusagehub</docker.image.prefix>
+		<docker.image.prefix>util-hazelcast</docker.image.prefix>
 		<docker.repository.url>172.28.249.153:5000</docker.repository.url>
 		<hazelcast-kubernetes-version>0.9.3</hazelcast-kubernetes-version>
 	</properties>
@@ -110,7 +110,7 @@
 				<artifactId>docker-maven-plugin</artifactId>
 				<version>0.4.11</version>
 				<configuration>
-					<imageName>${docker.image.prefix}/${project.artifactId}</imageName>
+					<imageName>${docker.repository.url}/${docker.image.prefix}/${project.artifactId}</imageName>
 					<dockerDirectory>src/main/docker</dockerDirectory>
 					<imageTags>
 						<imageTag>${project.version}</imageTag>
