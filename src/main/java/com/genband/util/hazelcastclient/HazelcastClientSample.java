@@ -21,11 +21,11 @@ public class HazelcastClientSample {
 
 			service.storeValue("Maps", "Queens");
 			System.out.println("Get value: " + service.getValue("Maps"));
-			// Thread.sleep(18000);
+			Thread.sleep(18000);
 
 			System.out.println("Get value: " + service.getValue("Maps"));
 
-			// Thread.sleep(18000);
+			Thread.sleep(18000);
 			System.out.println("Get value: " + service.getValue("Maps"));
 
 		} catch (Exception e) {

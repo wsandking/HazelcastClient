@@ -10,15 +10,24 @@ public class HazelcastClientConfig {
 	 * @param cfg
 	 */
 	private static void loadProperties(ClientConfig cfg) {
-		
+
 		/**
 		 * 
 		 * Maybe do the smart Join, read environment var and find services based
 		 * on that
 		 * 
 		 */
-		cfg.getNetworkConfig().addAddress("172.28.250.4:32002");
-		
+		/**
+		 * Try to load environment var
+		 */
+		String hazelcastServerSvcName = System.getenv("HAZELCAST_SVC_NAME");
+
+		if (null == hazelcastServerSvcName) {
+			cfg.getNetworkConfig().addAddress("172.28.250.4:32002");
+		} else {
+			cfg.getNetworkConfig().addAddress(hazelcastServerSvcName);
+		}
+
 	}
 
 	public static ClientConfig composeConfiguration() {
