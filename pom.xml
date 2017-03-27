@@ -20,22 +20,10 @@
 	</properties>
 
 	<dependencies>
-		<!-- https://mvnrepository.com/artifact/log4j/log4j -->
 		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<version>1.2.17</version>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-			<version>1.7.23</version>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-log4j12</artifactId>
-			<version>1.7.23</version>
+			<groupId>com.genband.util</groupId>
+			<artifactId>ms-logging</artifactId>
+			<version>0.0.54</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/com.hazelcast/hazelcast -->
 		<dependency>
@@ -56,8 +44,6 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-
-
 	<build>
 		<resources>
 			<resource>
@@ -128,5 +114,4 @@
 		</plugins>
 		<finalName>hazelcast-client-test-sample</finalName>
 	</build>
-
 </project>

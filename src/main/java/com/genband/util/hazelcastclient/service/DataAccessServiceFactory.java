@@ -9,29 +9,29 @@ package com.genband.util.hazelcastclient.service;
  */
 public class DataAccessServiceFactory {
 
-	public static ReplicatDataService getService(String das) {
+    public static ReplicateDataService getService(String das) {
 
-		DataAccessService svc = DataAccessService.valueOf(das);
-		ReplicatDataService service = null;
+        DataAccessService svc = DataAccessService.valueOf(das);
+        ReplicateDataService service = null;
 
-		switch (svc) {
-		case HAZELCAST_DATA_CLUSTER:
+        switch (svc) {
+        case HAZELCAST_DATA_CLUSTER:
 
-			service = HazelcastReplicatDataService.getInstance();
-			break;
+            service = HazelcastReplicatDataService.getInstance();
+            break;
 
-		default:
-			/**
-			 * 
-			 * Unrecognized client
-			 * 
-			 */
-			break;
+        default:
+            /**
+             * 
+             * Unrecognized client
+             * 
+             */
+            break;
 
-		}
+        }
 
-		return service;
+        return service;
 
-	}
+    }
 
 }

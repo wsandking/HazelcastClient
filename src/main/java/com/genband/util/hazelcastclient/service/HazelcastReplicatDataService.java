@@ -15,75 +15,83 @@ import com.hazelcast.transaction.TransactionOptions.TransactionType;
  * @author sewang
  *
  */
-public class HazelcastReplicatDataService implements ReplicatDataService {
+public class HazelcastReplicatDataService implements ReplicateDataService {
 
-	private static HazelcastReplicatDataService instance;
-	private HazelcastInstance hInstance;
-	private TransactionOptions options;
-	private Map<String, String> eventMap;
+    private static HazelcastReplicatDataService instance;
+    private HazelcastInstance hInstance;
+    private TransactionOptions options;
+    private Map<String, String> eventMap;
 
-	protected static HazelcastReplicatDataService getInstance() {
+    protected static HazelcastReplicatDataService getInstance() {
+        if (null == instance)
+            instance = new HazelcastReplicatDataService();
+        return instance;
+    }
 
-		if (null == instance)
-			instance = new HazelcastReplicatDataService();
-		return instance;
+    private HazelcastReplicatDataService() {
+        hInstance = HazelcastClient.newHazelcastClient(HazelcastClientConfig.composeConfiguration());
+        options = new TransactionOptions().setTransactionType(TransactionType.TWO_PHASE);
+        eventMap = hInstance.getReplicatedMap("MobilePushEventMap");
+    }
 
-	}
+    @Override
+    public String getValue(String key) {
+        TransactionContext context = hInstance.newTransactionContext(options);
+        context.beginTransaction();
 
-	private HazelcastReplicatDataService() {
+        System.out.println(String.format("Get value for key - %s ", key));
+        String value = eventMap.get(key);
 
-		hInstance = HazelcastClient.newHazelcastClient(HazelcastClientConfig.composeConfiguration());
-		options = new TransactionOptions().setTransactionType(TransactionType.TWO_PHASE);
-		eventMap = hInstance.getReplicatedMap("MobilePushEventMap");
+        context.commitTransaction();
 
-	}
+        return value;
 
-	@Override
-	public String getValue(String key) {
+    }
 
-		TransactionContext context = hInstance.newTransactionContext(options);
-		context.beginTransaction();
+    @Override
+    public String retrieveValue(String key) {
+        TransactionContext context = hInstance.newTransactionContext(options);
+        context.beginTransaction();
 
-		System.out.println(String.format("Get value for key - %s ", key));
-		String value = eventMap.get(key);
+        String value = eventMap.get(key);
+        eventMap.remove(key);
 
-		context.commitTransaction();
+        context.commitTransaction();
 
-		return value;
+        return value;
+    }
 
-	}
+    @Override
+    public void storeValue(String key, String value) {
+        /**
+         * Maybe some validation need to be done here
+         */
 
-	@Override
-	public String retrieveValue(String key) {
+        TransactionContext context = hInstance.newTransactionContext(options);
+        context.beginTransaction();
 
-		TransactionContext context = hInstance.newTransactionContext(options);
-		context.beginTransaction();
+        System.out.println(String.format("Storing key %s : value %s", key, value));
+        eventMap.put(key, value);
 
-		String value = eventMap.get(key);
-		eventMap.remove(key);
+        context.commitTransaction();
+    }
 
-		context.commitTransaction();
+    @Override
+    public String retrieveValue(String key, String mapName) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-		return value;
+    @Override
+    public String getValueFromMap(String key, String mapName) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-	}
+    @Override
+    public void storeValue(String map, String key, String value) {
+        // TODO Auto-generated method stub
 
-	@Override
-	public String storeValue(String key, String value) {
-
-		/**
-		 * Maybe some validation need to be done here
-		 */
-
-		TransactionContext context = hInstance.newTransactionContext(options);
-		context.beginTransaction();
-
-		System.out.println(String.format("Storing key %s : value %s", key, value));
-		eventMap.put(key, value);
-
-		context.commitTransaction();
-
-		return null;
-	}
+    }
 
 }
